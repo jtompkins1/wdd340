@@ -1,0 +1,9 @@
+<!-- content heading - Title Element-->
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<!-- Message Block -->
+<p><%- message %></p>
