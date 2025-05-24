@@ -59,6 +59,34 @@ Util.buildClassificationGrid = async function(data){
   return grid
 }
 
+
+/* **************************************
+* Build the detail view HTML
+* ************************************ */
+
+Util.buildVehicleDetail = async function(data){
+  let detail = '';
+  if(data){
+    detail = '<div class="detail">'
+    //detail += '<h1>' + data.inv_make + ' ' + data.inv_model + '</h1>'
+    detail += '<div class="detail-image">'
+    detail += '<img src="' + data.inv_image + '" alt="Image of ' 
+    + data.inv_make + ' ' + data.inv_model + '." />'
+    detail += '</div>'
+    detail += '<div class="detail-info">'
+    detail += '<p>Price: $' 
+    + new Intl.NumberFormat('en-US').format(data.inv_price) + '</p>'
+    detail += '<p>Color: ' + data.inv_color + '</p>'
+    detail += '<p>Mileage: ' 
+    + new Intl.NumberFormat('en-US').format(data.inv_miles) + ' miles</p>'
+    detail += '<p>Description: ' + data.inv_description + '</p>'
+    detail += '</div>'
+    detail += '</div>'
+  } else { 
+    detail += '<p class="notice">Sorry, vehicle could not be found.</p>'
+  }
+  return detail
+}
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 
