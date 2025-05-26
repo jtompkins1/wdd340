@@ -1,0 +1,12 @@
+<!-- content heading - Title Element-->
+<% if (title) { %>
+<h1><%= title || "My Account" %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<!-- Message Block -->
+<%- messages() %>
+
+<!-- Display login html -->
+ <%- login %>

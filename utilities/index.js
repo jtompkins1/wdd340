@@ -1,4 +1,5 @@
 const invModel = require("../models/inventory-model")
+
 const Util = {}
 
 /* ************************
@@ -68,7 +69,6 @@ Util.buildVehicleDetail = async function(data){
   let detail = '';
   if(data){
     detail = '<div class="detail">'
-    //detail += '<h1>' + data.inv_make + ' ' + data.inv_model + '</h1>'
     detail += '<div class="detail-image">'
     detail += '<img src="' + data.inv_image + '" alt="Image of ' 
     + data.inv_make + ' ' + data.inv_model + '." />'
@@ -87,6 +87,51 @@ Util.buildVehicleDetail = async function(data){
   }
   return detail
 }
+
+
+
+/* **************************************
+* Build the login view HTML
+* ************************************ */
+Util.buildLogin= async function(req, res, next){
+  let login = '';
+  login = '<div class="login">'
+  login += '<form class="login-form" action="/account/login" method="post">'
+  login += '<label for="username">Username:</label>'
+  login += '<input type="text" id="username" name="username" required>'
+  login += '<label for="password">Password:</label>'
+  login += '<input type="password" id="password" name="password" required>'
+  login += '<button type="submit">Login</button>'
+  login += '</form>'
+  login += '<p>No account? <a href="/account/register">Sign-up</a></p>'
+  login += '</div>'
+  return login
+}
+
+
+/* **************************************
+* Build the register view HTML
+* ************************************ */
+Util.buildRegister= async function(req, res, next){
+  let register = '';
+  register = '<div class="register">'
+  register += '<form class="register-form" action="/account/register" method="post">'
+  register += '<label for="account_firstname">First Name <span class="required">*</span>:</label>'
+  register += '<input type="text" id="firstname" name="account_firstname" required>'
+  register += '<label for="account_lastname">Last Name <span class="required">*</span>:</label>'
+  register += '<input type="text" id="account_lastname" name="account_lastname" required>'
+  register += '<label for="account_email">Email <span class="required">*</span>:</label>'
+  register += '<input type="email" id="account_email" name="account_email" required>'
+  register += '<label for="account_password">Password <span class="required">*</span>:</label>'
+  register += '<input type="password" id="account_password" name="account_password" required>'
+  register += '<div class="psw-req"><p>Password must be at least 12 characters long, include 1 capital letter, 1 number, and 1 special character.</p> <p>* Indicates required field.</p></div>'
+  register += '<button type="submit">Register</button>'
+  register += '</div>'
+  register += '</form>'
+  register += '</div>'
+  return register
+}
+
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 
