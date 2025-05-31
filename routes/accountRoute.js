@@ -1,3 +1,4 @@
+// routes/accountRoute.js
 // Needed Resources 
 const express = require("express")
 const router = new express.Router() 
@@ -15,7 +16,7 @@ router.get("/login", utilities.handleErrors(accountController.buildLogin));
 router.get("/register", utilities.handleErrors(accountController.buildRegister));
 
 // Route to process registration
-router.post('/register', utilities.handleErrors(accountController.registerAccount))
+router.post("/register", utilities.handleErrors(accountController.registerAccount))
 
 module.exports = router;
 

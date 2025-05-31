@@ -1,3 +1,4 @@
+//controllers/accountController.js
 const utilities = require("../utilities/")
 const accountModel = require("../models/account-model")
 
@@ -32,13 +33,18 @@ accountController.buildLogin = async (req, res, next) => {
 *  Deliver register view
 * *************************************** */
 accountController.buildRegister = async (req, res, next) => {
-  let nav = await utilities.getNav()
-  let register = await utilities.buildRegister(req, res, next)
-  res.render("account/register", {
-    title: "Register",
-    nav,
-    register,
-  })
+  try {
+    let nav = await utilities.getNav();
+    let register = await utilities.buildRegister(req, res, next);
+    console.log('Rendering register view with:', { title: "Register", nav, register });
+    res.render("account/register", {
+      title: "Register",
+      nav,
+      register,
+    });
+  } catch (error) {
+    next(error);
+  }
 }
 
 /* ****************************************
@@ -55,19 +61,20 @@ accountController.registerAccount = async (req, res, next) => {
     account_password
   )
 
-  if (regResult) {
+  if (regResult.rowCount === 1) {
     req.flash(
       "notice",
       `Congratulations, you\'re registered ${account_firstname}. Please log in.`
     )
-    res.status(201).render("account/login", {
-      title: "Login",
-      nav,
-    })
+    res.redirect("/account/login")
+    // res.status(201).render("account/login", {
+    //   title: "Login",
+    //   nav,
+    // })
   } else {
     req.flash("notice", "Sorry, the registration failed.")
     res.status(501).render("account/register", {
-      title: "Registration",
+      title: "Register",
       nav,
     })
   }

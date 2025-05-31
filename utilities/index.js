@@ -1,3 +1,4 @@
+//utilities/index.js
 const invModel = require("../models/inventory-model")
 
 const Util = {}
@@ -129,6 +130,7 @@ Util.buildRegister= async function(req, res, next){
   register += '</div>'
   register += '</form>'
   register += '</div>'
+  console.log('Register HTML:', register) // Debugging line
   return register
 }
 
