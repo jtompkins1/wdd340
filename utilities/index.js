@@ -113,26 +113,26 @@ Util.buildLogin= async function(req, res, next){
 /* **************************************
 * Build the register view HTML
 * ************************************ */
-Util.buildRegister= async function(req, res, next){
-  let register = '';
-  register = '<div class="register">'
-  register += '<form class="register-form" action="/account/register" method="post">'
-  register += '<label for="account_firstname">First Name <span class="required">*</span>:</label>'
-  register += '<input type="text" id="firstname" name="account_firstname" required>'
-  register += '<label for="account_lastname">Last Name <span class="required">*</span>:</label>'
-  register += '<input type="text" id="account_lastname" name="account_lastname" required>'
-  register += '<label for="account_email">Email <span class="required">*</span>:</label>'
-  register += '<input type="email" id="account_email" name="account_email" required>'
-  register += '<label for="account_password">Password <span class="required">*</span>:</label>'
-  register += '<input type="password" id="account_password" name="account_password" required>'
-  register += '<div class="psw-req"><p>Password must be at least 12 characters long, include 1 capital letter, 1 number, and 1 special character.</p> <p>* Indicates required field.</p></div>'
-  register += '<button type="submit">Register</button>'
-  register += '</div>'
-  register += '</form>'
-  register += '</div>'
-  console.log('Register HTML:', register) // Debugging line
-  return register
-}
+// Util.buildRegister= async function(req, res, next){
+//   let register = '';
+//   register = '<div class="register">'
+//   register += '<form class="register-form" action="/account/register" method="post">'
+//   register += '<label for="account_firstname">First Name <span class="required">*</span>:</label>'
+//   register += '<input type="text" id="firstname" name="account_firstname" required>'
+//   register += '<label for="account_lastname">Last Name <span class="required">*</span>:</label>'
+//   register += '<input type="text" id="account_lastname" name="account_lastname" required>'
+//   register += '<label for="account_email">Email <span class="required">*</span>:</label>'
+//   register += '<input type="email" id="account_email" name="account_email" required>'
+//   register += '<label for="account_password">Password <span class="required">*</span>:</label>'
+//   register += '<input type="password" id="account_password" name="account_password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">'
+//   register += '<div class="psw-req"><p>Password must be at least 12 characters long, include 1 capital letter, 1 number, and 1 special character.</p> <p>* Indicates required field.</p></div>'
+//   register += '<button type="submit">Register</button>'
+//   register += '</div>'
+//   register += '</form>'
+//   register += '</div>'
+//   console.log('Register HTML:', register) // Debugging line
+//   return register
+// }
 
 /* ****************************************
  * Middleware For Handling Errors

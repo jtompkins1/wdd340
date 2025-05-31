@@ -12,6 +12,7 @@ accountController.buildAccountView = async (req, res, next) =>{
   res.render("account/account", {
     title: "My Account",
     nav,
+    errors: null,
   })
 }
 
@@ -26,6 +27,7 @@ accountController.buildLogin = async (req, res, next) => {
     title: "Login",
     nav,
     login,
+    errors: null,
   })
 }
 
@@ -35,12 +37,13 @@ accountController.buildLogin = async (req, res, next) => {
 accountController.buildRegister = async (req, res, next) => {
   try {
     let nav = await utilities.getNav();
-    let register = await utilities.buildRegister(req, res, next);
-    console.log('Rendering register view with:', { title: "Register", nav, register });
     res.render("account/register", {
       title: "Register",
       nav,
-      register,
+      errors: null,
+      account_firstname: "",
+      account_lastname: "", 
+      account_email: "",
     });
   } catch (error) {
     next(error);
@@ -76,6 +79,7 @@ accountController.registerAccount = async (req, res, next) => {
     res.status(501).render("account/register", {
       title: "Register",
       nav,
+      errors: null,
     })
   }
 }
