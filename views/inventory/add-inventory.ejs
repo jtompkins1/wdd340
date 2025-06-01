@@ -1,0 +1,147 @@
+<!-- views/inventory/add-inventory.ejs -->
+<!-- content heading - Title Element-->
+<% if (title) { %>
+<h1><%= title || "Add New Inventory" %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<!-- Message Block -->
+<%- messages() %>
+
+<!-- Display validation errors if any -->
+<% if (errors) { %>
+  <ul class="notice">
+    <% errors.forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<!-- Form to add a new inventory -->
+<form action="/inv/add-inventory" method="POST">
+    <div class="inventory-form">
+        <!-- inv_make -->
+        <label for="inv_make">Make:</label>
+        <input 
+            type="text" 
+            id="inv_make" 
+            name="inv_make" 
+            value="<%= inv_make %>"
+            required
+            pattern="^[a-zA-Z]{1,50}$"
+            title="Make must be alphabetic characters, up to 50 characters, no spaces or special characters.">
+        <p class="required">Make must be alphabetic characters, up to 50 characters, no spaces or special characters.</p>
+        <!-- inv_model -->
+        <label for="inv_model">Model:</label>
+        <input 
+            type="text" 
+            id="inv_model" 
+            name="inv_model" 
+            value="<%= inv_model %>" 
+            required 
+            pattern="[a-zA-Z0-9\s]{1,50}" 
+            title="Model can include letters, numbers, and spaces, up to 50 characters."
+        >
+        <p class="required">Letters, numbers, and spaces allowed.</p>
+
+
+        <!-- inv_year  -->
+
+        <label for="inv_year">Year:</label>
+        <input 
+            type="number" 
+            id="inv_year" 
+            name="inv_year" 
+            value="<%= inv_year %>" 
+            required 
+            min="1900" 
+            max="<%= new Date().getFullYear() + 1 %>" 
+            title="Year must be between 1900 and next year."
+        >
+        <p class="required">Enter a valid year between 1900 and <%= new Date().getFullYear() + 1 %>.</p>
+
+        <!-- inv_description -->
+        <label for="inv_description">Description:</label>
+        <textarea 
+            id="inv_description" 
+            name="inv_description" 
+            required 
+            maxlength="500"
+        ><%= locals.inv_description || '' %></textarea>
+        <p class="required">Provide a description (up to 500 characters).</p>
+
+        <!-- inv_image    -->
+
+        <label for="inv_image">Image Path:</label>
+        <input class="url-input"
+            type="text" 
+            id="inv_image" 
+            name="inv_image" 
+            value="<%= inv_image || '/images/vehicles/no-image.png' %>" 
+            required 
+            pattern="/images/vehicles/[a-zA-Z0-9\-]+\.(png|jpg|jpeg)" 
+            title="Image path must be in /images/vehicles/ with a .png, .jpg, or .jpeg extension.">
+        <p class="required">Use format: /images/vehicles/filename.png (defaults to no-image.png).</p>
+
+        <!-- inv_thumbnail -->
+        <label for="inv_thumbnail">Thumbnail Path:</label>
+        <input class="url-input"
+            type="text" 
+            id="inv_thumbnail" 
+            name="inv_thumbnail" 
+            value="<%= inv_thumbnail || '/images/vehicles/no-image-tn.png' %>" 
+            required 
+            pattern="/images/vehicles/[a-zA-Z0-9\-]+\.(png|jpg|jpeg)" 
+            title="Thumbnail path must be in /images/vehicles/ with a .png, .jpg, or .jpeg extension.">
+        <p class="required">Use format: /images/vehicles/filename-tn.png (defaults to no-image-tn.png).</p>
+
+        <!-- inv_price -->
+        <label for="inv_price">Price:</label>
+        <input 
+            type="number" 
+            id="inv_price" 
+            name="inv_price" 
+            value="<%= inv_price %>" 
+            required 
+            min="0" 
+            step="0.01" 
+            title="Price must be a positive number with up to two decimal places."
+        >
+        <p class="required">Enter a positive price (e.g., 25000.99).</p>
+
+        <!-- inv_miles -->
+        <label for="inv_miles">Miles:</label>
+        <input 
+            type="number" 
+            id="inv_miles" 
+            name="inv_miles" 
+            value="<%= locals.inv_miles || '' %>" 
+            required 
+            min="0" 
+            title="Miles must be a non-negative integer."
+        >
+        <p class="required">Enter positive mileage.</p>
+
+        <!-- inv_color -->
+        <label for="inv_color">Color:</label>
+        <input 
+            type="text" 
+            id="inv_color" 
+            name="inv_color" 
+            value="<%= locals.inv_color || '' %>" 
+            required 
+            pattern="[a-zA-Z\s]{1,50}" 
+            title="Color must be alphabetic characters or spaces, up to 50 characters."
+        >
+        <p class="required">Alphabetic characters or spaces only.</p>
+
+        <!-- classification_id -->
+        <label for="classificationList">Classification:</label>
+        <%- classificationList %>
+        <p class="required" >Select a classification from the list.</p>
+
+
+        <button type="submit">Add To Inventory</button>
+    </div>
+</form>

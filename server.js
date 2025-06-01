@@ -89,7 +89,7 @@ let nav;
     title: err.status || 'Server Error',
     message,
     nav,
-    errors: null,
+    // errors: null,
   })
 })
 

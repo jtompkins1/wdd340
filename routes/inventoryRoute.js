@@ -22,15 +22,25 @@ router.get("/", utilities.handleErrors(invController.buildManagement));
 // Route to add-classification view
 router.get("/add-classification", utilities.handleErrors(invController.buildAddClassification));
 
-// Route to add-inventory view
-router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventory));
 
-// Route to validate form submission
+// Route to validate add classification form submission
 router.post(
   "/add-classification",
   classValidate.classificationRules(),
   classValidate.checkClassificationData,
   utilities.handleErrors(invController.addClassification)
+);
+
+
+// Route to add-inventory view
+router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventory));
+
+// Route to validate add inventory form submission
+router.post(
+  "/add-inventory",
+  classValidate.inventoryRules(),
+  classValidate.checkInventoryData,
+  utilities.handleErrors(invController.addInventory)
 );
 
 module.exports = router;

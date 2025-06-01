@@ -100,7 +100,7 @@ invCont.addClassification = async function (req, res, next) {
   try {
     const result = await invModel.addClassification(classification_name)
     if (typeof result === "object" && result.error) {
-      const nav = await utilities.getNav()
+      const nav = await utilities.getNav();
       req.flash("notice", result.error);
       res.render("inventory/add-classification", {
         title: "Add New Classification",
@@ -113,7 +113,7 @@ invCont.addClassification = async function (req, res, next) {
       const updatedNav = await utilities.getNav();
       res.render("inventory/management", {
         title: "Inventory Management",
-        updatedNav,
+        nav: updatedNav,
       });
     } else {
       const nav = await utilities.getNav()
@@ -136,16 +136,57 @@ invCont.addClassification = async function (req, res, next) {
  * ************************** */
 invCont.buildAddInventory = async function (req, res, next) {
   try {
-    let nav = await utilities.getNav()
+    let nav = await utilities.getNav();
+    let classificationList = await utilities.buildClassificationList();
     res.render("./inventory/add-inventory", {
-      title: "Add Inventory",
+      title: "Add New Inventory",
       nav,
+      classificationList,
+      errors: null,
+      inv_make: "",
+      inv_model: "",
+      inv_year: "",
+      inv_description: "",
+      inv_image: "/images/vehicles/no-image.png",
+      inv_thumbnail: "/images/vehicles/no-image-tn.png",
+      inv_price: "",
+      inv_miles: "",
+      inv_color: "",
+      classification_id: ""
     })
   } catch (error) {
     console.error("Error in buildAddInventory: ", error)
     next(error)
   }
 
-}
+};
+
+/* Process add-inventory form */
+invCont.addInventory = async function (req, res, next) {
+  try {
+    const result = await invModel.addInventory(req.body); // Pass req.body directly
+    let nav = await utilities.getNav();
+    if (result) { // Check the boolean result
+      req.flash("notice", "Inventory item added successfully.");
+      res.render("inventory/management", {
+        title: "Inventory Management",
+        nav,
+      });
+    } else {
+      let classificationList = await utilities.buildClassificationList(req.body.classification_id);
+      req.flash("notice", "Failed to add inventory item.");
+      res.render("inventory/add-inventory", {
+        title: "Add New Inventory",
+        nav,
+        classificationList,
+        errors: [{ msg: "Database insertion failed." }],
+        ...req.body// Spread the req.body 
+      });
+    }
+  } catch (error) {
+    console.error("Error in addInventory controller:", error);
+    next(error);
+  }
+};
 
 module.exports = invCont
