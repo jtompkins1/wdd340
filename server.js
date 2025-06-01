@@ -73,8 +73,15 @@ app.use(async (req, res, next) => {
 * Place after all other middleware
 *************************/
 app.use(async (err, req, res, next) => {
-  let nav = await utilities.getNav()
-  console.error(`Error at: "${req.originalUrl}": ${err.message}`)
+let nav;
+  try {
+    nav = await utilities.getNav(); // Attempt to fetch navigation
+  } catch (navError) {
+    console.error("Failed to get navigation:", navError); // Log the failure for debugging
+    nav = ""; // Fallback to an empty string if getNav() fails
+  }
+  console.error(`Error at: "${req.originalUrl}": ${err.message}`); // Log the original error
+  let message;
   if(err.status == 404){ message = err.message} 
   else if(err.status == 500){ message = 'This is an intentional error.'}
   else {message = 'Oh no! There was a crash. Maybe try a different route?'}

@@ -1,3 +1,4 @@
+//inventory-model.js
 const pool = require("../database/")
 
 /* ***************************
@@ -45,5 +46,21 @@ async function getInventoryByInvId(inv_id) {
   }
 }
 
+/* ***************************
+ *  add Classification
+ * ************************** */
+async function addClassification(classification_name) {
+  try {
+    const sql = "INSERT INTO classification (classification_name) VALUES ($1) RETURNING *";
+    const result = await pool.query(sql, [classification_name]);
+    return result.rowCount > 0;
+  } catch (error) {
+    if (error.code === "23505") { // Unique constraint violation (PostgreSQL)
+      return { error: "Classification name already exists." };
+    }
+    console.error(error);
+    return { error: "Database error." };
+  }
+}
 
-module.exports = {getClassifications, getInventoryByClassificationId, getInventoryByInvId}
+module.exports = {addClassification,getClassifications, getInventoryByClassificationId, getInventoryByInvId}

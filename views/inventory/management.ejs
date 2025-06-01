@@ -1,0 +1,15 @@
+<!-- views/inventory/management.ejs -->
+<!-- content heading - Title Element-->
+<% if (title) { %>
+<h1><%= title || "Inventory Management" %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<!-- Message Block -->
+<%- messages() %>
+
+<!--link too add new classification-->
+<p><a href="/inv/add-classification">Add New Classification</a></p>
+<!-- link to add new inventory-->
+<p><a href="/inv/add-inventory">Add New Inventory</a></p>

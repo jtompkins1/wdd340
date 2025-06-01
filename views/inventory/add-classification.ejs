@@ -1,0 +1,28 @@
+<!-- views/inventory/add-classification.ejs -->
+<!-- content heading - Title Element-->
+<% if (title) { %>
+<h1><%= title || "Add Classification" %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<!-- Message Block -->
+<%- messages() %>
+
+<!-- Form to add a new classification -->
+<form action="/inv/add-classification" method="POST">
+    <div class="classification-form">
+        <label for="classification_name">Classification Name:</label>
+        <input 
+            type="text" 
+            id="classification_name" 
+            name="classification_name" 
+            value="<%= classification_name %>"
+            required
+            pattern="^[a-zA-Z]+$"
+            title="No spaces or special characters allowed">
+        <p>No numbers, spaces or special characters allowed</p>
+
+        <button type="submit">Add Classification</button>
+    </div>
+</form>

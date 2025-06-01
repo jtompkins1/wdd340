@@ -10,7 +10,7 @@
 }
 
 h1, h2 {
-    font-family: 'Arial', sans-serif;
+    font-family: 'arial', sans-serif;
 }
 
 .notice {
@@ -23,7 +23,7 @@ footer {
   background-color: black;
   color: white;
   padding: 10px;
-  font-family: 'Arial', sans-serif;
+  font-family: 'arial', sans-serif;
   font-size: 0.8em;
   position: relative;
   bottom: 0;
@@ -55,7 +55,7 @@ footer a {
   font-size: 2em;
   color: black;
   text-decoration: none;
-  font-family: 'Arial', sans-serif;
+  font-family: 'arial', sans-serif;
 }
 
 #tools a {
@@ -67,8 +67,8 @@ footer a {
 }
 nav ul {
   display: flex;
-  /*equally spaced horizontally*/
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
   /*remove bullets*/
   list-style: none;
   background-color: black;
@@ -80,7 +80,7 @@ nav ul {
 nav ul li {
   padding: 10px;
   font-size: 16px;
-  font-family: 'Arial', sans-serif;
+  font-family: 'arial', sans-serif;
   color: white;
   max-width: 80%;
 }
@@ -89,7 +89,7 @@ nav ul li a {
   text-decoration: none;
   color: white;
   font-size: 16px;
-  font-family: 'Arial', sans-serif;
+  font-family: 'arial', sans-serif;
 }
 
 nav ul li a:hover {
@@ -117,7 +117,7 @@ nav ul li a:hover {
   background-color: rgba(255, 255, 255, 0.2);
   text-align: center;
   color: var(--primary-blue);
-  font-family: 'Arial', sans-serif;
+  font-family: 'arial', sans-serif;
   margin: 15px;
   padding-left: 20px;
   z-index: 1;
@@ -128,14 +128,14 @@ nav ul li a:hover {
   font-size: 20px;
   font-weight: bold;
   text-align: left;
-  margin: 0;
-  padding: 0;
+  /* margin: 0;
+  padding: 0; */
   
 }
 .delorean-info ul {
   list-style: none;
-  padding: 0;
-  margin: 0;
+  /* padding: 0;
+  margin: 0; */
   text-align: left;
   font-weight: bold;
 }
@@ -235,7 +235,7 @@ nav ul li a:hover {
 #inv-display .namePrice h2 {
   font-size: 1.5rem;
   margin: 0.5rem 0;
-  font-family: 'Arial', sans-serif;
+  font-family: 'arial', sans-serif;
 }
 
 #inv-display .namePrice h2 a {
@@ -314,7 +314,7 @@ nav ul li a:hover {
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
-  font-family: 'roboto condensed', sans-serif;
+  font-family: 'Roboto condensed', sans-serif;
   font-variant: small-caps;
   font-weight: bold;
   margin-bottom: 10px;
@@ -344,6 +344,19 @@ nav ul li a:hover {
   background-position: center;
   margin: 10px;
   }
+
+  nav ul {
+  display: flex;
+  flex-direction: row;
+  /*equally spaced horizontally*/
+  justify-content: space-between;
+  /*remove bullets*/
+  list-style: none;
+  background-color: black;
+  padding: 10px 30px;
+  width: 100%;
+  margin: 10px 0;
+}
 
   #wrapper {
     width: 80%;
