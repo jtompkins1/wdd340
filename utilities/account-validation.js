@@ -1,3 +1,5 @@
+//utilities/account-validation.js
+
 const utilities = require(".")
   const { body, validationResult } = require("express-validator")
   const validate = {}
@@ -6,7 +8,7 @@ const accountModel = require("../models/account-model")
   /*  **********************************
   *  Registration Data Validation Rules
   * ********************************* */
-  validate.registationRules = () => {
+  validate.registrationRules = () => {
     return [
       // firstname is required and must be string
       body("account_firstname")
@@ -73,6 +75,32 @@ validate.checkRegData = async (req, res, next) => {
       account_email,
     })
     return
+  }
+  next()
+}
+
+validate.loginRules = () => [
+  body('account_email')
+    .trim()
+    .isEmail()
+    .normalizeEmail()
+    .withMessage('A valid email is required.'),
+  body('account_password')
+    .trim()
+    .isLength({ min: 6 })
+    .withMessage('Password must be at least 6 characters.')
+]
+
+validate.checkLoginData = async (req, res, next) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let nav = await require('../utilities/').getNav()
+    return res.status(400).render('account/login', {
+      title: 'Login',
+      nav,
+      errors: errors.array(),
+      account_email: req.body.account_email,
+    })
   }
   next()
 }

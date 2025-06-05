@@ -1,5 +1,7 @@
 //utilities/index.js
 const invModel = require("../models/inventory-model")
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
 const Util = {}
 
@@ -94,14 +96,14 @@ Util.buildVehicleDetail = async function(data){
 /* **************************************
 * Build the login view HTML
 * ************************************ */
-Util.buildLogin= async function(req, res, next){
+Util.buildLogin = function(req, res, next){
   let login = '';
   login = '<div class="login">'
   login += '<form class="login-form" action="/account/login" method="post">'
-  login += '<label for="username">Username:</label>'
-  login += '<input type="text" id="username" name="username" required>'
-  login += '<label for="password">Password:</label>'
-  login += '<input type="password" id="password" name="password" required>'
+  login += '<label for="account_email">Email:</label>'
+  login += '<input type="email" id="account_email" name="account_email" required>'
+  login += '<label for="account_password">Password:</label>'
+  login += '<input type="password" id="account_password" name="account_password" required>'
   login += '<button type="submit">Login</button>'
   login += '</form>'
   login += '<p>No account? <a href="/account/register">Sign-up</a></p>'
@@ -138,5 +140,29 @@ Util.buildClassificationList = async function (classification_id = null) {
  * General Error Handling
  **************************************** */
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
+
+
+/* ****************************************
+* Middleware to check token validity
+**************************************** */
+Util.checkJWTToken = (req, res, next) => {
+ if (req.cookies.jwt) {
+  jwt.verify(
+   req.cookies.jwt,
+   process.env.ACCESS_TOKEN_SECRET,
+   function (err, accountData) {
+    if (err) {
+     req.flash("Please log in")
+     res.clearCookie("jwt")
+     return res.redirect("/account/login")
+    }
+    res.locals.accountData = accountData
+    res.locals.loggedin = 1
+    next()
+   })
+ } else {
+  next()
+ }
+}
 
 module.exports = Util
