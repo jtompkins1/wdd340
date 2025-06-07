@@ -10,14 +10,14 @@ const accountController = {}
 /* ****************************************
 *  Deliver account view
 * *************************************** */
-accountController.buildAccountView = async (req, res, next) =>{
-  let nav = await utilities.getNav()
-  res.render("account/account", {
-    title: "My Account",
-    nav,
-    errors: null,
-  })
-}
+// accountController.buildAccountView = async (req, res, next) =>{
+//   let nav = await utilities.getNav()
+//   res.render("account/", {
+//     title: "My Account",
+//     nav,
+//     errors: null,
+//   })
+// }
 
 
 /* ****************************************
@@ -86,7 +86,7 @@ accountController.registerAccount = async (req, res, next) => {
       "notice",
       `Congratulations, you\'re registered ${account_firstname}. Please log in.`
     )
-    res.redirect("/account/login")
+    res.redirect("account/login")
     // res.status(201).render("account/login", {
     //   title: "Login",
     //   nav,
@@ -127,7 +127,7 @@ accountController.accountLogin = async (req, res) => {
       } else {
         res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
       }
-      return res.redirect("/account/management")
+      return res.redirect("/account/")
     }
     else {
       req.flash("message notice", "Please check your credentials and try again.")

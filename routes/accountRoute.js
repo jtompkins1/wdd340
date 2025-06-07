@@ -8,15 +8,16 @@ const regValidate = require('../utilities/account-validation')
 
 
 // Route to account view
-router.get("/", utilities.handleErrors(accountController.buildAccountView));
+//router.get("/", utilities.handleErrors(accountController.buildAccountView));
 
 //Route to login view
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
 
 // Route to account management view
-router.get("/management",
-    utilities.checkJWTToken,
-    utilities.handleErrors(accountController.buildAccountManagement))
+router.get("/",
+  utilities.checkLogin,
+  utilities.checkJWTToken,
+  utilities.handleErrors(accountController.buildAccountManagement))
 
 // Route to register view
 router.get("/register", utilities.handleErrors(accountController.buildRegister));
