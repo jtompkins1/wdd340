@@ -11,5 +11,17 @@
 
 <!-- Display html -->
 <div>
-    <p>You are Logged in!</p>
+  <% if (accountData) { %>
+    <h2>Welcome <%= accountData.account_firstname %></h2>
+    
+    <!-- Link to update account information -->
+    <a href="/account/update/<%= accountData.account_id %>">Update Account Information</a>
+    
+    <% if (accountData.account_type === 'Employee' || accountData.account_type === 'Admin') { %>
+      <h3>Inventory Management</h3>
+      <p><a href="/inventory/management">Access Inventory Management</a></p>
+    <% } %>
+  <% } else { %>
+    <p>You are not logged in.</p>
+  <% } %>
 </div>

@@ -20,8 +20,16 @@ router.get("/error", utilities.handleErrors(invController.triggerError));
 // Route for management view
 router.get("/", utilities.handleErrors(invController.buildManagement));
 
+// Route to list inventory by classification_id
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+
+
+// Protected views 
+
 // Route to add-classification view
-router.get("/add-classification", utilities.handleErrors(invController.buildAddClassification));
+router.get("/add-classification",
+  utilities.checkAdminOrEmployee,
+  utilities.handleErrors(invController.buildAddClassification));
 
 
 // Route to validate add classification form submission
@@ -32,9 +40,10 @@ router.post(
   utilities.handleErrors(invController.addClassification)
 );
 
-
 // Route to add-inventory view
-router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventory));
+router.get("/add-inventory",
+  utilities.checkAdminOrEmployee,
+  utilities.handleErrors(invController.buildAddInventory));
 
 // Route to validate add inventory form submission
 router.post(
@@ -44,11 +53,10 @@ router.post(
   utilities.handleErrors(invController.addInventory)
 );
 
-// Route to list inventory by classification_id
-router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
-
 // Route to build edit-inventory view
-router.get("/edit/:inv_id", utilities.handleErrors(invController.buildEditInventory));
+router.get("/edit/:inv_id", 
+    utilities.checkAdminOrEmployee,
+    utilities.handleErrors(invController.buildEditInventory));
 
 // Route to process edit inventory form submission
 router.post(
@@ -58,7 +66,9 @@ router.post(
   utilities.handleErrors(invController.updateInventory));
 
 // Route to delete-confirmation view
-router.get("/delete/:inv_id", utilities.handleErrors(invController.buildDeleteInventory));
+router.get("/delete/:inv_id", 
+    utilities.checkAdminOrEmployee,
+    utilities.handleErrors(invController.buildDeleteInventory));
 
 //route to process delete inventory item
 router.post("/delete", utilities.handleErrors(invController.removeInventory));

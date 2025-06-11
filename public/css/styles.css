@@ -284,7 +284,7 @@ nav ul li a:hover {
 
 
 /* Log in form styles */
-.login, .register, .inventory-form, .classification-form {
+.login, .register, .inventory-form, .classification-form, #updateForm, #changePasswordForm {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -300,14 +300,18 @@ nav ul li a:hover {
 
 }
 
-.login-form input, .register-form input {
+#changePasswordForm {
+  margin-top: 20px;
+}
+
+.login-form input, .register-form input, #updateForm input, #changePasswordForm input {
   display: block;
   width: 100%;
   padding: 10px;  
   margin-bottom: 10px;
 }
 
-.login-form button, .register-form button, .inventory-form button, .classification-form button {
+.login-form button, .register-form button, .inventory-form button, .classification-form button, #updateForm button, #changePasswordForm button {
   background-color: var(--primary-blue);
   color: white;
   border: none;

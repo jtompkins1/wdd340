@@ -48,6 +48,13 @@ app.use(cookieParser())
 
 app.use(utilities.checkJWTToken)
 
+//middleware to discover if user is logged in
+app.use((req, res, next) => {
+  res.locals.loggedIn = req.session.loggedIn || false;
+  res.locals.userName = req.session.userName || '';
+  next();
+});
+
 /* ***********************
  * View Engine and Templates
  *************************/
