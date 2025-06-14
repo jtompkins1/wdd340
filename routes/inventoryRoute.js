@@ -17,14 +17,18 @@ router.get("/detail/:invId", invController.buildByInvId);
 // Route to trigger intentional error
 router.get("/error", utilities.handleErrors(invController.triggerError));
 
-// Route for management view
-router.get("/", utilities.handleErrors(invController.buildManagement));
+
 
 // Route to list inventory by classification_id
 router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
 
 
 // Protected views 
+
+// Route for management view
+router.get("/",
+    utilities.checkAdminOrEmployee,
+    utilities.handleErrors(invController.buildManagement));
 
 // Route to add-classification view
 router.get("/add-classification",

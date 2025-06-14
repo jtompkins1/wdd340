@@ -17,6 +17,7 @@ invCont.buildByClassificationId = async function (req, res, next) {
     title: className + " vehicles",
     nav,
     grid,
+    accountData: res.locals.accountData || null,
   })
 }
 
@@ -39,6 +40,7 @@ invCont.buildByInvId = async function (req, res, next) {
       title: `${data.inv_make} ${data.inv_model}`,
       nav,
       detail,
+      accountData: res.locals.accountData || null,
     })
   } catch (error) {
     console.error("Error in buildByInvId: ", error)

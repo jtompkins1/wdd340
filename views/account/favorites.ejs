@@ -1,0 +1,24 @@
+<!-- views/account/favorites.ejs -->
+<!-- content heading - Title Element-->
+<% if (title) { %>
+<h1><%= title || "My Favorites" %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<!-- Message Block -->
+<%- messages() %>
+
+<!-- Display validation errors if any -->
+<% if (errors) { %>
+  <ul class="notice">
+    <% errors.forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<!-- Display Favorites -->
+<%- fav %>
+<span class="heart <%= item.isFavorited ? 'favorited' : '' %>"></span>
+<script src="/js/favorite.js"></script>

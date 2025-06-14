@@ -37,14 +37,19 @@ Util.getNav = async function (req, res, next) {
 Util.buildClassificationGrid = async function(data){
   let grid
   if(data.length > 0){
+
     grid = '<ul id="inv-display">'
     data.forEach(vehicle => { 
       grid += '<li>'
+      grid += '<div class="image-container">'
       grid +=  '<a href="../../inv/detail/'+ vehicle.inv_id 
       + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
       + 'details"><img src="' + vehicle.inv_thumbnail 
       +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
       +' on CSE Motors" /></a>'
+      grid += '<span class="favorite-heart" data-inv-id="' + vehicle.inv_id + '">♥</span>'
+      grid += '<span class="heart ' + (vehicle.isFavorited ? 'favorited' : '') + '"></span>';
+      grid += '</div>'
       grid += '<div class="namePrice">'
       grid += '<hr />'
       grid += '<h2>'
@@ -58,6 +63,7 @@ Util.buildClassificationGrid = async function(data){
       grid += '</li>'
     })
     grid += '</ul>'
+
   } else { 
     grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
   }
@@ -76,6 +82,8 @@ Util.buildVehicleDetail = async function(data){
     detail += '<div class="detail-image">'
     detail += '<img src="' + data.inv_image + '" alt="Image of ' 
     + data.inv_make + ' ' + data.inv_model + '." />'
+    detail += '<span class="favorite-heart" data-inv-id="' + data.inv_id + '">♥</span>'
+    detail += '<span class="heart ' + (vehicle.isFavorited ? 'favorited' : '') + '"></span>';
     detail += '</div>'
     detail += '<div class="detail-info">'
     detail += '<p>Price: $' 
@@ -112,6 +120,39 @@ Util.buildLogin = function(req, res, next){
   return login
 }
 
+/* **************************************
+* Build the Favorites grid HTML
+* ************************************ */
+Util.buildFavoritesGrid = async function(data) {
+  let fav = '';
+  if (data.length > 0) {
+    fav += '<ul id="favorites-display">';
+    data.forEach(vehicle => {
+      fav += '<li>';
+      fav += '<div class="image-container">';
+      fav += '<a href="../../inv/detail/' + vehicle.inv_id + '" title="View ' + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">';
+      fav += '<img src="' + vehicle.inv_thumbnail + '" alt="Image of ' + vehicle.inv_make + ' ' + vehicle.inv_model + ' on CSE Motors" />';
+      fav += '</a>';
+      fav += '<span class="favorite-heart favorited" data-inv-id="' + vehicle.inv_id + '">♥</span>';
+      fav += '<span class="heart ' + (vehicle.isFavorited ? 'favorited' : '') + '"></span>';
+      fav += '</div>';
+      fav += '<div class="namePrice">';
+      fav += '<hr />';
+      fav += '<h2>';
+      fav += '<a href="../../inv/detail/' + vehicle.inv_id + '" title="View ' + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">';
+      fav += vehicle.inv_make + ' ' + vehicle.inv_model;
+      fav += '</a>';
+      fav += '</h2>';
+      fav += '<span>$' + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>';
+      fav += '</div>';
+      fav += '</li>';
+    });
+    fav += '</ul>';
+  } else {
+    fav += '<p class="notice">You have no favorite vehicles.</p>';
+  }
+  return fav;
+};
 
 /* **************************************
 * Build the Classification List
@@ -157,12 +198,14 @@ Util.checkJWTToken = (req, res, next) => {
      res.clearCookie("jwt")
      return res.redirect("/account/login")
     }
+    req.user = accountData
     res.locals.accountData = accountData
     res.locals.loggedin = 1
     next()
    })
  } else {
-  next()
+    req.flash("notice", "Please log in.");
+    return res.redirect("/account/login");
  }
 }
 
