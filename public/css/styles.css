@@ -373,6 +373,16 @@ p {
   font-family: 'Arial', sans-serif;
 }
 
+.favorite-heart {
+  cursor: pointer;
+  color: grey;
+  font-size: 1.5em;
+}
+
+.favorite-heart.favorited {
+  color: red;
+}
+
 
 /* Media query for larger screens */
 

@@ -1,6 +1,6 @@
 //models/account-model.js
 const pool = require("../database/")
-const { get } = require("../server")
+//const { get } = require("../server")
 
 
 /* *****************************
@@ -77,12 +77,13 @@ async function updatePassword(account_id, account_password) {
   return await pool.query(sql, [account_password, account_id]);
 }
 
+
 module.exports = {
   registerAccount,
   checkExistingEmail,
   getAccountByEmail,
   updateAccount,
   getAccountById,
-  updatePassword  
+  updatePassword
 }
 

@@ -34,17 +34,21 @@ Util.getNav = async function (req, res, next) {
 /* **************************************
 * Build the classification view HTML
 * ************************************ */
-Util.buildClassificationGrid = async function(data){
+Util.buildClassificationGrid = async function(data, favorites = []) {
   let grid
   if(data.length > 0){
     grid = '<ul id="inv-display">'
     data.forEach(vehicle => { 
+    const isFavorited = favorites && Array.isArray(favorites) ? 
+          favorites.some(fav => fav.inv_id === vehicle.inv_id) : 
+          false;
       grid += '<li>'
       grid +=  '<a href="../../inv/detail/'+ vehicle.inv_id 
       + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
       + 'details"><img src="' + vehicle.inv_thumbnail 
       +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
       +' on CSE Motors" /></a>'
+      grid += '<span class="favorite-heart ' + (isFavorited ? 'favorited' : '') + '" data-inv-id="' + vehicle.inv_id + '">♥</span>';
       grid += '<div class="namePrice">'
       grid += '<hr />'
       grid += '<h2>'
@@ -157,6 +161,7 @@ Util.checkJWTToken = (req, res, next) => {
      res.clearCookie("jwt")
      return res.redirect("/account/login")
     }
+    res.user = accountData
     res.locals.accountData = accountData
     res.locals.loggedin = 1
     next()

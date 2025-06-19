@@ -19,6 +19,7 @@ const pool = require('./database/')
 const accountRoute = require("./routes/accountRoute")
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
+const favoriteRoute = require("./routes/favoriteRoute")
 
 /* ***********************
  * Middleware
@@ -46,7 +47,7 @@ app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-
 
 app.use(cookieParser())
 
-app.use(utilities.checkJWTToken)
+//app.use(utilities.checkJWTToken)
 
 //middleware to discover if user is logged in
 app.use((req, res, next) => {
@@ -75,6 +76,9 @@ app.use("/inv", inventoryRoute)
 
 // Account routes
 app.use("/account", accountRoute)
+
+// Favorite routes
+app.use("/account", favoriteRoute)
 
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {

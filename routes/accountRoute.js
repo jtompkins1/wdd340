@@ -6,12 +6,16 @@ const accountController = require("../controllers/accountController")
 const utilities = require("../utilities")
 const regValidate = require('../utilities/account-validation')
 
+router.use(utilities.checkJWTToken); // Apply to all routes under /account
+
 
 // Route to account view
 //router.get("/", utilities.handleErrors(accountController.buildAccountView));
 
 //Route to login view
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
+
+
 
 // Route to account management view
 router.get("/",

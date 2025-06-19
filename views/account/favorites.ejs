@@ -1,0 +1,25 @@
+<!-- views/account/favorites.ejs -->
+<!-- content heading - Title Element-->
+<% if (title) { %>
+<h1><%= title || "My Favorites" %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<!-- Message Block -->
+<%- messages() %>
+
+<!-- Display favorites -->
+<% if (favorites && favorites.length > 0) { %>
+  <ul>
+    <% favorites.forEach(vehicle => { %>
+      <li>
+        <h2><%= vehicle.inv_make %> <%= vehicle.inv_model %></h2>
+        <p>Price: $<%= new Intl.NumberFormat('en-US').format(vehicle.inv_price) %></p>
+        <p>Year: <%= vehicle.inv_year %></p>
+      </li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>You have no favorite vehicles.</p>
+<% } %>
