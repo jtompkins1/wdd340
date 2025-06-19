@@ -13,7 +13,13 @@ const favoriteController = {}
 * *************************************** */
 
 favoriteController.buildFavorites = async (req, res) => {
-  const account_id = req.user.account_id; // Set by checkJWTToken middleware
+const account_id = req.session.account_id;
+
+  if (!req.session.loggedIn || !account_id) {
+    req.flash("notice", "Please log in to view favorites.");
+    return res.redirect("/account/login")
+  }
+  
   const favorites = await favoriteModel.getFavorites(account_id);
   const nav = await utilities.getNav();
   res.render("account/favorites", {
@@ -21,32 +27,28 @@ favoriteController.buildFavorites = async (req, res) => {
     nav,
     favorites,
     errors: null,
-  });
-};
+  })
+}
 
-// Add a favorite
 favoriteController.addFavorite = async (req, res) => {
-  if (!req.user || !req.user.account_id) {
-    req.flash("notice", "Please log in to add favorites.");
-    return res.redirect("/account/login");
+  if (!res.locals.loggedIn || !res.locals.accountData) {
+    return res.status(401).json({ success: false, message: "Please log in to add favorites." })
   }
-  const account_id = req.user.account_id;
-  const invId = parseInt(req.params.invId);
-  await favoriteModel.addFavorite(account_id, invId);
-  res.json({ success: true });
-};
+  const account_id = res.locals.accountData.account_id
+  const invId = parseInt(req.params.invId)
+  const result = await favoriteModel.addFavorite(account_id, invId)
+  res.json(result)
+}
 
-// Remove a favorite
 favoriteController.removeFavorite = async (req, res) => {
-  if (!req.user || !req.user.account_id) {
-    req.flash("notice", "Please log in to remove favorites.");
-    return res.redirect("/account/login");
+  if (!res.locals.loggedIn || !res.locals.accountData) {
+    return res.status(401).json({ success: false, message: "Please log in to remove favorites." })
   }
-  const account_id = req.user.account_id;
-  const invId = parseInt(req.params.invId);
-  await favoriteModel.removeFavorite(account_id, invId);
-  res.json({ success: true });
-};
+  const account_id = res.locals.accountData.account_id
+  const invId = parseInt(req.params.invId)
+  const result = await favoriteModel.removeFavorite(account_id, invId)
+  res.json(result)
+}
 
 
 module.exports = favoriteController;

@@ -1,6 +1,7 @@
 //invController.js
 const invModel = require("../models/inventory-model")
 const utilities = require("../utilities")
+const favoriteModel = require("../models/favorite-model")
 
 const invCont = {}
 
@@ -11,16 +12,20 @@ invCont.buildByClassificationId = async function (req, res, next) {
   const classification_id = req.params.classificationId
   const data = await invModel.getInventoryByClassificationId(classification_id)
   let favorites = [];
-  if (req.user) {
-    favorites = await accountModel.getFavorites(req.user.account_id);
+  // Check if user is logged in and fetch favorites
+  if (res.locals.loggedin && res.locals.accountData) {
+    const account_id = res.locals.accountData.account_id
+    const favoriteData = await favoriteModel.getFavorites(account_id)
+    favorites = Array.isArray(favoriteData) ? favoriteData : []
   }
   const grid = await utilities.buildClassificationGrid(data, favorites)
   let nav = await utilities.getNav()
-  const className = data[0].classification_name
+  const className = data.length > 0 ? data[0].classification_name : ""
   res.render("./inventory/classification", {
     title: className + " vehicles",
     nav,
     grid,
+    errors: null,
   })
 }
 
@@ -30,24 +35,24 @@ invCont.buildByClassificationId = async function (req, res, next) {
 
 invCont.buildByInvId = async function (req, res, next) {
   const inv_id = req.params.invId
-  try {
-    const data = await invModel.getInventoryByInvId(inv_id)
-    if (!data) {
-      const error = new Error("Inventory item not found")
-      error.status = 404
-      return next(error)
-    }
-    const detail = await utilities.buildVehicleDetail(data)
-    let nav = await utilities.getNav()
-    res.render("./inventory/detail", {
-      title: `${data.inv_make} ${data.inv_model}`,
-      nav,
-      detail,
-    })
-  } catch (error) {
-    console.error("Error in buildByInvId: ", error)
-    next(error)
+  const data = await invModel.getInventoryByInvId(inv_id)
+  let favorites = []
+  
+  // Check if user is logged in and fetch favorites
+  if (res.locals.loggedin && res.locals.accountData) {
+    const account_id = res.locals.accountData.account_id
+    const favoriteData = await favoriteModel.getFavorites(account_id)
+    favorites = Array.isArray(favoriteData) ? favoriteData : []
   }
+  
+  const detail = await utilities.buildVehicleDetail(data, favorites)
+  let nav = await utilities.getNav()
+  res.render("./inventory/detail", {
+    title: data.inv_make + " " + data.inv_model,
+    nav,
+    detail,
+    errors: null,
+  })
 }
 
 /* ***************************

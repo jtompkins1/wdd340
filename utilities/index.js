@@ -73,8 +73,10 @@ Util.buildClassificationGrid = async function(data, favorites = []) {
 * Build the detail view HTML
 * ************************************ */
 
-Util.buildVehicleDetail = async function(data){
+Util.buildVehicleDetail = async function(data, favorites = []) {
   let detail = '';
+  const isFavorited = favorites && Array.isArray(favorites) ? 
+  favorites.some(fav => fav.inv_id === data.inv_id) : false
   if(data){
     detail = '<div class="detail">'
     detail += '<div class="detail-image">'
@@ -82,6 +84,7 @@ Util.buildVehicleDetail = async function(data){
     + data.inv_make + ' ' + data.inv_model + '." />'
     detail += '</div>'
     detail += '<div class="detail-info">'
+    detail += '<span class="favorite-heart ' + (isFavorited ? 'favorited' : '') + '" data-inv-id="' + data.inv_id + '">♥</span>'
     detail += '<p>Price: $' 
     + new Intl.NumberFormat('en-US').format(data.inv_price) + '</p>'
     detail += '<p>Color: ' + data.inv_color + '</p>'
@@ -175,7 +178,7 @@ Util.checkJWTToken = (req, res, next) => {
  *  Check Login
  * ************************************ */
  Util.checkLogin = (req, res, next) => {
-  if (res.locals.loggedin) {
+  if (res.locals.loggedIn) {
     next()
   } else {
     req.flash("notice", "Please log in.")

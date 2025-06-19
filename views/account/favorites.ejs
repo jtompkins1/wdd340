@@ -15,6 +15,7 @@
     <% favorites.forEach(vehicle => { %>
       <li>
         <h2><%= vehicle.inv_make %> <%= vehicle.inv_model %></h2>
+        <span class="favorite-heart favorited" data-inv-id="<%= vehicle.inv_id %>">♥</span>
         <p>Price: $<%= new Intl.NumberFormat('en-US').format(vehicle.inv_price) %></p>
         <p>Year: <%= vehicle.inv_year %></p>
       </li>
@@ -23,3 +24,4 @@
 <% } else { %>
   <p>You have no favorite vehicles.</p>
 <% } %>
+

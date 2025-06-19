@@ -6,16 +6,18 @@ document.addEventListener('DOMContentLoaded', () => {
     heart.addEventListener('click', async (event) => {
       const invId = heart.dataset.invId;
       const isFavorited = heart.classList.contains('favorited');
-      const url = `/account/favorites/${isFavorited ? 'remove' : 'add'}/${invId}`;
+      const url = `/account/favorites${isFavorited ? '/remove' : ''}/${invId}`;
       try {
         const response = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
         });
+        const data = await response.json();
         if (response.ok) {
           heart.classList.toggle('favorited');
+          alert(data.message || (isFavorited ? 'Favorite removed' : 'Favorite added'));
         } else {
-          throw new Error('Failed to update favorite');
+          alert(data.message || 'Failed to update favorite');
         }
       } catch (error) {
         console.error('Error:', error);

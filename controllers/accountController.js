@@ -105,6 +105,8 @@ accountController.registerAccount = async (req, res, next) => {
 /* ****************************************
  *  Process login request
  * ************************************ */
+
+
 accountController.accountLogin = async (req, res) => {
   let nav = await utilities.getNav()
   const { account_email, account_password } = req.body
